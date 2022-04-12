@@ -28,6 +28,10 @@ Vagrant.configure("2") do |config|
      echo "# PYTHON_ALIAS_ADDED" >> /home/vagrant/.bash_aliases
      echo "alias python='python3'" >> /home/vagrant/.bash_aliases
    fi
+   if ! grep -q SET_O_VI_ADDED /home/vagrant/.bashrc; then
+     echo "# SET_O_VI_ADDED" >> /home/vagrant/.bashrc
+     echo "set -o vi" >> /home/vagrant/.bashrc
+   fi
  SHELL
 end
 @LscEmitter
