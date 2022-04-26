@@ -6,6 +6,7 @@ class HelloSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=20)
     pal = serializers.CharField(max_length=20, allow_blank=True)
     num = serializers.IntegerField(min_value=1, max_value=99999)
+    universal = serializers.CharField(max_length=35, allow_blank=True)
 
 class UserProfileSerializer(serializers.ModelSerializer):
     """Serializes a user profile object"""
