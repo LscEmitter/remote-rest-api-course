@@ -22,6 +22,7 @@ Vagrant.configure("2") do |config|
    systemctl disable apt-daily.timer
 
    sudo apt-get update
+   sudo apt-get -y upgrade
    sudo apt-get install -y python3-venv zip
    touch /home/vagrant/.bash_aliases
    if ! grep -q PYTHON_ALIAS_ADDED /home/vagrant/.bash_aliases; then
@@ -32,6 +33,23 @@ Vagrant.configure("2") do |config|
      echo "# SET_O_VI_ADDED" >> /home/vagrant/.bashrc
      echo "set -o vi" >> /home/vagrant/.bashrc
    fi
+
+   # The following is created by Lothar S for creating and using a Virtualenv by PyCharm
+   # in the Vagrant machine  (pyCharm can't do virtual env on ramote development)  LSc-04/22
+   sudo --user vagrant python3 -m venv /home/vagrant/env
+
+   touch /home/vagrant/python3-venv
+   echo '#!/usr/bin/env bash'  >> /home/vagrant/python3-venv
+   echo '# Shim Script fpr activating python venv before starting python' >> /home/vagrant/python3-venv
+   echo '# This is because PyCharm cannot activate a venv environment on a remote server' >> /home/vagrant/python3-venv
+   echo '# found at https://youtrack.jetbrains.com/issue/PY-29551/No-way-to-activate-virtualenv-for-remote-interpreter#27-4891080.0-0' >> /home/vagrant/python3-venv
+   echo '' >> /home/vagrant/python3-venv
+   echo 'source /home/vagrant/env/bin/activate' >> /home/vagrant/python3-venv
+   echo 'exec python3 $*' >> /home/vagrant/python3-venv
+   chmod +x /home/vagrant/python3-venv
+   chown vagrant:vagrant /home/vagrant/python3-venv
+
+
  SHELL
 end
 @LscEmitter
