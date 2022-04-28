@@ -6,13 +6,13 @@ from django.contrib.auth.models import BaseUserManager
 class UserProfileManager(BaseUserManager):
     """Manager for user profiles"""
 
-    def create_user(self, email, name, password=None):
+    def create_user(self, email, name, universal, password=None):
         """Creat a new user profile"""
         if not email:
             raise ValueError('User must have an email address')
 
         email = self.normalize_email(email)
-        user = self.model(email=email, name=name)
+        user = self.model(email=email, name=name, universal=universal)
         user.set_password(password)
         user.save(using=self._db)
 
@@ -32,9 +32,10 @@ class UserProfileManager(BaseUserManager):
 
 
 class UserProfile(AbstractBaseUser, PermissionsMixin):
-    """Database model fpr users in the system"""
+    """Database model for users in the system"""
     email = models.EmailField(max_length=255, unique=True)
     name = models.CharField(max_length=255)
+    universal = models.CharField(max_length=255, default='')
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 

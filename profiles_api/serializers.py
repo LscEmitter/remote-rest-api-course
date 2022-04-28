@@ -1,22 +1,25 @@
 from rest_framework import serializers
 from profiles_api import models
 
+
 class HelloSerializer(serializers.Serializer):
     """Serialize a name field for testing our APIView"""
     name = serializers.CharField(max_length=20)
     pal = serializers.CharField(max_length=20, allow_blank=True)
     num = serializers.IntegerField(min_value=1, max_value=99999)
-    universal = serializers.CharField(max_length=35, allow_blank=True)
+#    universal = serializers.CharField(max_length=35, allow_blank=True)
+
 
 class UserProfileSerializer(serializers.ModelSerializer):
     """Serializes a user profile object"""
+
     class Meta:
         model = models.UserProfile
-        fields = ('id', 'email', 'name', 'password')
+        fields = ('id', 'email', 'name', 'password', 'universal')
         extra_kwargs = {
-            'password' : { 'write_only' : True,
-                           'style' : {'input_type' : 'password'}
-                           }
+            'password': {'write_only': True,
+                         'style': {'input_type': 'password'}
+                         }
         }
 
     def create(self, validated_data):
@@ -25,6 +28,15 @@ class UserProfileSerializer(serializers.ModelSerializer):
             email=validated_data['email'],
             name=validated_data['name'],
             password=validated_data['password'],
+            universal=validated_data['universal'],
         )
 
         return user
+
+    def update(self, instance, validated_data):
+        """Handle updateing user account"""
+        if 'password' in validated_data:
+            password = validated_data.pop('password')
+            instance.set_password(password)
+
+        return super().update(instance, validated_data)
