@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # set -e : If the return code of one command is not 0 and the caller does not check it, the shell script will exit.
 set -e
+# set -x : Echo command before executuion
+set -x
 
 PROJECT_GIT_URL='https://github.com/LscEmitter/remote-rest-api-course.git'
 
@@ -26,6 +28,7 @@ git clone $PROJECT_GIT_URL $PROJECT_BASE_PATH
 # Create virtual environment
 mkdir -p $PROJECT_BASE_PATH/env
 python3 -m venv $PROJECT_BASE_PATH/env
+. $PROJECT_BASE_PATH/env/bin/activate
 
 # Install python packages
 $PROJECT_BASE_PATH/env/bin/pip install -r $PROJECT_BASE_PATH/requirements.txt

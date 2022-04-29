@@ -25,7 +25,7 @@ SECRET_KEY = 'b8*@*d#b9p_zo322t61n*mm^)43d@egmo1-_cdl^+uc9i#tk+%'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(int(os.environ.get('DEBUG', 1)))
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['wirnach.de', '127.0.0.1']
 
 
 # Application definition
